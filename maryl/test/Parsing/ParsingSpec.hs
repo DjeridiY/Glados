@@ -46,6 +46,23 @@ spec = do
                 parseAST' "char letter = 'A';"
                     `shouldBe` Right [AstDefineVar (Variable "letter" Char (AstChar 'A'))]
 
+        context "Unary minus" $ do
+            it "int a = -4;" $ do
+                parseAST' "int a = -4;"
+                    `shouldBe` Right [AstDefineVar (Variable "a" Int (AstInt (-4)))]
+
+            it "double x = -0.5;" $ do
+                parseAST' "double x = -0.5;"
+                    `shouldBe` Right [AstDefineVar (Variable "x" Double (AstDouble (-0.5)))]
+
+            it "8 - -2" $ do
+                parseAST' "8 - -2;"
+                    `shouldBe` Right [AstBinaryFunc "-" (AstInt 8) (AstInt (-2))]
+
+            it "-a" $ do
+                parseAST' "-a;"
+                    `shouldBe` Right [AstBinaryFunc "-" (AstInt 0) (AstVar "a")]
+
         context "Variables and numbers math" $ do
             it "a + 1" $ do
                 parseAST' "a + 1;"

@@ -286,4 +286,59 @@ else
     print_red "❌ str_to_word_array.mrl failed"
 fi
 
+# neg_int.mrl
+print_bold "Running neg_int.mrl..."
+./glados build test/test_files/neg_int.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "6" ]; then
+    print_green "✅ neg_int.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ neg_int.mrl failed"
+fi
+
+# neg_double.mrl
+print_bold "Running neg_double.mrl..."
+./glados build test/test_files/neg_double.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "-0.5" ]; then
+    print_green "✅ neg_double.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ neg_double.mrl failed"
+fi
+
+# neg_var.mrl
+print_bold "Running neg_var.mrl..."
+./glados build test/test_files/neg_var.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "-12" ]; then
+    print_green "✅ neg_var.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ neg_var.mrl failed"
+fi
+
+# neg_expr.mrl
+print_bold "Running neg_expr.mrl..."
+./glados build test/test_files/neg_expr.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "-3" ]; then
+    print_green "✅ neg_expr.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ neg_expr.mrl failed"
+fi
+
+# neg_sub.mrl
+print_bold "Running neg_sub.mrl..."
+./glados build test/test_files/neg_sub.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "10" ]; then
+    print_green "✅ neg_sub.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ neg_sub.mrl failed"
+fi
+
 rm out.masm

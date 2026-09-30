@@ -783,7 +783,7 @@ operatorTable :: [[Operator Parser Ast]]
 operatorTable =
     [ [binary "." (AstBinaryFunc ".")],
         [ prefix "--" (AstPrefixFunc "--"),
-          prefix "-" (AstPrefixFunc "-"),
+          prefix "-" negate',
           prefix "++" (AstPrefixFunc "++"),
           prefix "+" id,
           prefix "!" (AstPrefixFunc "!"),
@@ -817,6 +817,11 @@ operatorTable =
         ],
       [ternary AstTernary]
     ]
+
+negate' :: Ast -> Ast
+negate' (AstInt n) = AstInt (-n)
+negate' (AstDouble d) = AstDouble (-d)
+negate' ast = AstBinaryFunc "-" (AstInt 0) ast
 
 -- | Megaparsec Expr parser call with 'convertValue' defining the types to parse and 'operatorTable' containing all operators handled.
 pExpr :: Parser Ast
