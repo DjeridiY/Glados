@@ -37,7 +37,7 @@ boolTokens = ['=', '!', '<', '>']
 assocOpExpectation :: Map.Map String [MarylType]
 assocOpExpectation =
     Map.fromList
-        [ ("+", [Int, Double]),
+        [ ("+", [Int, Double, String]),
           ("-", [Int, Double]),
           ("*", [Int, Double]),
           ("/", [Int, Double]),
@@ -327,7 +327,10 @@ evalMath opname _ mem l r
             )
 
 evalAdd :: Memory -> Ast -> Ast -> Either String (Ast, Memory)
-evalAdd = evalMath "+" (+)
+evalAdd mem (AstString s1) (AstString s2) = Right (AstString (s1 ++ s2), mem)
+evalAdd mem l r
+    | isString l && isString r = Right (AstBinaryFunc "+" l r, mem)
+    | otherwise = evalMath "+" (+) mem l r
 
 evalSub :: Memory -> Ast -> Ast -> Either String (Ast, Memory)
 evalSub = evalMath "-" (-)
@@ -441,3 +444,16 @@ isBool (AstConst (AstDefineVar (Variable _ Bool _))) = True
 isBool (AstGlobal (AstDefineVar (Variable _ Bool _))) = True
 isBool (AstGlobal (AstBool _)) = True
 isBool _ = False
+
+isString :: Ast -> Bool
+isString (AstString _) = True
+isString (AstArg (AstDefineVar (Variable _ String _)) _) = True
+isString (AstArg (AstFunc (Function _ _ _ String)) _) = True
+isString (AstArg (AstString _) _) = True
+isString (AstArg (AstDefineVar (Variable _ (Const String) _)) _) = True
+isString (AstDefineVar (Variable _ String _)) = True
+isString (AstFunc (Function _ _ _ String)) = True
+isString (AstConst (AstDefineVar (Variable _ String _))) = True
+isString (AstGlobal (AstDefineVar (Variable _ String _))) = True
+isString (AstGlobal (AstString _)) = True
+isString _ = False

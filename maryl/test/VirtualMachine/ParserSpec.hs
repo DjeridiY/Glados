@@ -50,6 +50,8 @@ spec = do
             parseAssembly "push \'a\'" `shouldBe` Right [Left $ push Nothing $ C 'a']
         it "should parse push with string" $ do
             parseAssembly "push \"42\"" `shouldBe` Right [Left $ push Nothing $ S "42"]
+        it "should parse push with empty string" $ do
+            parseAssembly "push \"\"" `shouldBe` Right [Left $ push Nothing $ S ""]
         it "should parse push with arg Int and label" $ do
             parseAssembly ".test push 1" `shouldBe` Right [Left $ push (Just ".test") $ N 1]
         it "should fail for bad int" $ do

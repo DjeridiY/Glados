@@ -36,6 +36,14 @@ spec =
                       ret Nothing
                     ]
                     `shouldReturn` N 60
+        it "should concatenate strings with add" $
+            execTest
+                [ push Nothing (S "ab"),
+                  push Nothing (S "cd"),
+                  call Nothing "add",
+                  ret Nothing
+                ]
+                `shouldReturn` S "abcd"
         it
             "should execute mixed addition (5 + 3.14)"
             $ do

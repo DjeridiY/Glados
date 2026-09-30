@@ -27,6 +27,7 @@ numericOp op (D x) (D y) = Right $ D (op x y)
 numericOp _ _ _ = Left "Invalid numeric op"
 
 operatorAdd :: [Value] -> VmState [Value]
+operatorAdd (S y : S x : xs) = return $ S (x ++ y) : xs
 operatorAdd (y : x : xs) = eitherS $ (: xs) <$> numericOp (+) x y
 operatorAdd _ = fail "expects two number"
 
