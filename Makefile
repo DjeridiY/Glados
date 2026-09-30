@@ -26,4 +26,10 @@ re: fclean all
 docs:
 	make docs -C maryl
 
-.PHONY: all lisp maryl clean fclean re
+check:
+	for p in maryl lisp; do (cd $$p && rm -f *.tix && stack test --allow-different-user) || exit 1; done
+	cd maryl && cp "$$(stack path --local-install-root --allow-different-user)/bin/glados-exe" glados && \
+	out="$$(bash test/compiler.sh 2>&1)"; echo "$$out" | grep -aE '✅|❌'; \
+	[ "$$(echo "$$out" | grep -ac '✅')" -eq "$$(echo "$$out" | grep -ac 'Running ')" ]
+
+.PHONY: all lisp maryl clean fclean re check
