@@ -1,0 +1,2 @@
+int f(int n) { return n < 2 ? 1 : 2; }
+int start() { print(f(1) * 10 + f(3)); return 0; }

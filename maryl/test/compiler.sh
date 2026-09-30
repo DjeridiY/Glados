@@ -286,4 +286,59 @@ else
     print_red "❌ str_to_word_array.mrl failed"
 fi
 
+# argless.mrl
+print_bold "Running argless.mrl..."
+./glados build test/test_files/argless.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "12" ]; then
+    print_green "✅ argless.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ argless.mrl failed"
+fi
+
+# factlesseq.mrl
+print_bold "Running factlesseq.mrl..."
+./glados build test/test_files/factlesseq.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "120" ]; then
+    print_green "✅ factlesseq.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ factlesseq.mrl failed"
+fi
+
+# arggreater.mrl
+print_bold "Running arggreater.mrl..."
+./glados build test/test_files/arggreater.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "16" ]; then
+    print_green "✅ arggreater.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ arggreater.mrl failed"
+fi
+
+# argdoublegreatereq.mrl
+print_bold "Running argdoublegreatereq.mrl..."
+./glados build test/test_files/argdoublegreatereq.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "1" ]; then
+    print_green "✅ argdoublegreatereq.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ argdoublegreatereq.mrl failed"
+fi
+
+# argternary.mrl
+print_bold "Running argternary.mrl..."
+./glados build test/test_files/argternary.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "12" ]; then
+    print_green "✅ argternary.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ argternary.mrl failed"
+fi
+
 rm out.masm

@@ -121,12 +121,25 @@ updateAssignment "<<=" left right mem = handleAssignment left (AstBinaryFunc "<<
 updateAssignment (op : _) left right mem = handleAssignment left (AstBinaryFunc [op] left right) mem
 updateAssignment _ _ _ mem = (D.empty, mem)
 
--- | Priority is considered on calls to functions/ function argument to compute before call to operation
+callsFunction :: Ast -> Bool
+callsFunction (AstFunc (Function n args _ _)) = not (isBuiltin n) || any callsFunction args
+callsFunction (AstBinaryFunc _ l r) = callsFunction l || callsFunction r
+callsFunction (AstTernary c l r) = any callsFunction [c, l, r]
+callsFunction _ = False
+
+{- | A call to a user function replaces the caller's whole stack with its result,
+ so a left operand already pushed would be lost: it is kept in a temporary instead.
+-}
 handlePriority :: Ast -> Ast -> Memory -> (D.DList Instruction, Memory)
-handlePriority left (AstFunc func) mem =
-    ( fst (translateAST (AstFunc func) mem) `D.append` fst (translateAST left mem),
-      mem
-    )
+handlePriority left right mem
+    | callsFunction right =
+        let tmp = "#tmp" ++ show (Map.size (Map.filterWithKey (\k _ -> take 4 k == "#tmp") mem))
+         in ( fst (translateAST left mem)
+                `D.append` D.singleton (load Nothing tmp)
+                `D.append` fst (translateAST right (updateMemory mem tmp AstVoid))
+                `D.append` D.fromList [load Nothing ('r' : tmp), get Nothing tmp, get Nothing ('r' : tmp)],
+              mem
+            )
 handlePriority left (AstArg arg idx) mem =
     ( fst (translateAST (AstArg arg idx) mem) `D.append` fst (translateAST left mem),
       mem
