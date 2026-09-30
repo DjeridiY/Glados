@@ -1,0 +1,19 @@
+name: check
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: "9.2.5"
+          enable-stack: true
+          stack-no-global: true
+      - uses: actions/cache@v4
+        with:
+          path: ~/.stack
+          key: stack-${{ runner.os }}-${{ hashFiles('*/stack.yaml', '*/package.yaml') }}
+      - run: make check
