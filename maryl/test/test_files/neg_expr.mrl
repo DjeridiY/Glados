@@ -1,0 +1,5 @@
+int start()
+{
+    print(-5 + 2);
+    return 0;
+}
