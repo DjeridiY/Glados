@@ -145,6 +145,10 @@ evalIfConditions (AstIf cond doBlock elseifs elseBlock) (AstBool False) mem =
                     >>= \(_, mem') -> Right (AstIf cond doBlock elseifs elseBlock, mem')
             Nothing -> Right (AstIf cond doBlock elseifs elseBlock, mem)
         _ -> Left "Invalid else-if structure."
+evalIfConditions ifAst (AstBinaryFunc op _ _) mem =
+    evalBinaryRet op Bool mem
+        >> evalIfConditions ifAst (AstBool True) mem
+        >> evalIfConditions ifAst (AstBool False) mem
 evalIfConditions _ _ _ = Left "Condition is not a boolean."
 
 -- | Evaluate else-if branches within blocks of loop.

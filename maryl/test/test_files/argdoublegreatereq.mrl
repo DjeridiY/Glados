@@ -1,0 +1,2 @@
+int f(double x) { if (x >= 1.5) { return 1; } return 0; }
+int start() { print(f(1.5) + f(0.5)); return 0; }

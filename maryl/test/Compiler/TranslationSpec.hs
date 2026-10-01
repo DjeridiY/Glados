@@ -18,7 +18,7 @@ import Parsing.ParserAst (
     Variable (..),
  )
 import Test.Hspec (Spec, describe, it, shouldBe)
-import VirtualMachine.Instructions (Value (..), call, load, push, ret)
+import VirtualMachine.Instructions (Value (..), call, get, load, push, ret)
 
 spec :: Spec
 spec = do
@@ -83,6 +83,19 @@ spec = do
             let ast = AstReturn (AstInt 42)
             fst (translateAST ast initMemory)
                 `shouldBe` D.fromList [push Nothing (N 42), ret Nothing]
+
+        it "keeps the left operand across a call to a user function" $ do
+            let ast = AstBinaryFunc "-" (AstInt 10) (AstFunc (Function "g" [] [] Int))
+            fst (translateAST ast initMemory)
+                `shouldBe` D.fromList
+                    [ push Nothing (N 10),
+                      load Nothing "#tmp0",
+                      call Nothing ".g",
+                      load Nothing "r#tmp0",
+                      get Nothing "#tmp0",
+                      get Nothing "r#tmp0",
+                      call Nothing "sub"
+                    ]
 
     describe "translateToASM" $ do
         it "translates a list of Ast nodes" $ do

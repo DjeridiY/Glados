@@ -9,7 +9,7 @@ module Eval.OpsSpecs (spec) where
 
 import Eval.Evaluator (evalAST, evalNode)
 import Memory (initMemory)
-import Parsing.ParserAst (Ast (..), Function (..))
+import Parsing.ParserAst (Ast (..), Function (..), MarylType (..), Variable (..))
 import Test.Hspec (Spec, context, describe, it, shouldBe)
 
 spec :: Spec
@@ -206,3 +206,9 @@ spec = do
             it "error handling" $ do
                 evalNode initMemory (AstBinaryFunc "or" (AstBool False) (AstInt (-4)))
                     `shouldBe` Left "Argument \"false\" invalid for \"or\"."
+
+    describe "conditions on function arguments" $ do
+        it "accepts an if comparing an argument with <" $ do
+            let n = AstArg (AstDefineVar (Variable "n" Int AstVoid)) (Just 0)
+                ifAst = AstIf (AstBinaryFunc "<" n (AstInt 2)) (AstBlock [AstReturn (AstInt 1)]) [] Nothing
+            evalNode initMemory ifAst `shouldBe` Right (ifAst, initMemory)
