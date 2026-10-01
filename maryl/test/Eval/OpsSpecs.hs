@@ -37,6 +37,12 @@ spec = do
             it "addition on float and int values" $ do
                 evalNode initMemory (AstBinaryFunc "+" (AstDouble 0.3) (AstInt (-1)))
                     `shouldBe` Right (AstDouble (-0.7), initMemory)
+            it "addition on strings concatenates" $ do
+                evalNode initMemory (AstBinaryFunc "+" (AstString "ab") (AstString "cd"))
+                    `shouldBe` Right (AstString "abcd", initMemory)
+            it "addition of int and string fails" $ do
+                evalNode initMemory (AstBinaryFunc "+" (AstInt 2) (AstString "a"))
+                    `shouldBe` Left "Arguments 2 or/and \"a\" is of invalid type for operation +."
 
         context "evaluates division" $ do
             it "division with positive values" $ do

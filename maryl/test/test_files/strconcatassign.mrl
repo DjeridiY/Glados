@@ -1,0 +1,7 @@
+int start() {
+    string s = "";
+    s = s + "x";
+    s = s + "y";
+    print(s);
+    return 0;
+}

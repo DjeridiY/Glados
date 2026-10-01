@@ -1,0 +1,7 @@
+int start()
+{
+    int a = 6;
+    int b = -a;
+    print(b * 2);
+    return 0;
+}
