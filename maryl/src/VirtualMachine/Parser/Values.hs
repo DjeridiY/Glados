@@ -100,7 +100,7 @@ parseEscapedChar =
 
 parseString :: Parser Value
 parseString =
-    lexeme $ S <$> parseString'
+    lexeme $ S <$> (try parseString' <|> (string "\"\"" >> return ""))
 
 parseBool :: Parser Value
 parseBool = lexeme (choice [parseTrue, parseFalse]) <?> "Boolean"

@@ -341,4 +341,48 @@ else
     print_red "❌ neg_sub.mrl failed"
 fi
 
+# strconcat.mrl
+print_bold "Running strconcat.mrl..."
+./glados build test/test_files/strconcat.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "abcd" ]; then
+    print_green "✅ strconcat.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ strconcat.mrl failed"
+fi
+
+# strconcatdef.mrl
+print_bold "Running strconcatdef.mrl..."
+./glados build test/test_files/strconcatdef.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "qrs" ]; then
+    print_green "✅ strconcatdef.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ strconcatdef.mrl failed"
+fi
+
+# strconcatassign.mrl
+print_bold "Running strconcatassign.mrl..."
+./glados build test/test_files/strconcatassign.mrl -o out.masm
+output=$(./glados run out.masm | tr -d '\n')
+if [ "$output" == "xy" ]; then
+    print_green "✅ strconcatassign.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ strconcatassign.mrl failed"
+fi
+
+# strconcaterror.mrl
+print_bold "Running strconcaterror.mrl..."
+./glados build test/test_files/strconcaterror.mrl -o out.masm
+output=$(echo $?)
+if [ "$output" == "84" ]; then
+    print_green "✅ strconcaterror.mrl passed!"
+else
+    print_yellow "got '$output'"
+    print_red "❌ strconcaterror.mrl failed"
+fi
+
 rm out.masm

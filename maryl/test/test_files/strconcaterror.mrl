@@ -1,0 +1,4 @@
+int start() {
+    int x = 2 + "a";
+    return 0;
+}

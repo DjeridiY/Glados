@@ -1,0 +1,5 @@
+int start() {
+    string a = "ab";
+    print(a + "cd");
+    return 0;
+}

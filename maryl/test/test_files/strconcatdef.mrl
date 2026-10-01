@@ -1,0 +1,6 @@
+int start() {
+    string a = "q";
+    string b = a + "rs";
+    print(b);
+    return 0;
+}
